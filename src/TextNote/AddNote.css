@@ -1,0 +1,114 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.main {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.left {
+  width: 49.9%;
+  height: 100vh;
+  background: linear-gradient(
+    to right,
+    rgba(139, 69, 19, 0.66),
+    rgba(221, 160, 221, 0.769)
+  );
+  padding: 2rem 0;
+  box-shadow: 2px 2px 2px black;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+textarea {
+  border-radius: 10px;
+  padding: 10px;
+  /* color: brown; */
+  font-size: 20px;
+  font-weight: bold;
+  width: 370px;
+  height: 180px;
+  background: linear-gradient(to right, lightcoral, lightblue);
+}
+::placeholder {
+  color: brown;
+}
+button {
+  margin-top: 3rem;
+  padding: 7px 35px;
+  border-radius: 20px;
+  background-color: antiquewhite;
+  box-shadow: 2px 2px 2px #0000009e;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.right {
+  width: 50%;
+  height: 100vh;
+  background: linear-gradient(to right, rgba(205, 92, 92, 0.493), chocolate);
+  /* padding: 1rem; */
+  overflow-y: scroll;
+  color: papayawhip;
+}
+.right h2 {
+  text-align: center;
+  padding-top: 2rem;
+}
+.task {
+  background-color: gray;
+  border: 2px solid black;
+  /* width: 100px;
+  height: 50px; */
+  border-radius: 10px;
+  position: relative;
+  margin: 15px;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+span {
+  /* position: absolute;
+  right: 6px; */
+  margin-left: 10px;
+  font-weight: bold;
+}
+.tasks {
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 300px) and (max-width: 570px) {
+  .textarea {
+    width: unset;
+  }
+  .left {
+    width: unset;
+    min-height: 100px;
+  }
+  .main {
+    flex-direction: column;
+  }
+  .right {
+    width: unset;
+    min-height: 50px;
+  }
+  textarea {
+    width: unset;
+  }
+}
+@media screen and (min-width: 570px) and (max-width: 900px) {
+  textarea {
+    width: unset;
+  }
+}
