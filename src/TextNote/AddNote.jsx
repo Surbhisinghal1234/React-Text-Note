@@ -1,81 +1,81 @@
-import React, { useState } from "react";
 
-function AddNote() {
-  const colors = [
-    { background: "#000", color: "#fff" },
-    { background: "#123456", color: "#fff" },
-    { background: "#120012", color: "#fff" },
-  ];
+import React, { useState, useMemo } from "react";
+
+function TextNote() {
   const [inputValue, setInputValue] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [noteColors, setNoteColors] = useState([]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    setTasks([...tasks, inputValue]);
-    setInputValue("");
-  }
+  const memoizedFunctions = useMemo(() => {
+    const getRandomColor = () => {
+      const randomColor = `#${Math.floor(Math.random() * 16777215).toString(
+        16
+      )}`;
+      return { background: randomColor, color: "#fff" };
+    };
 
-  function closeTask(e) {
-    console.log(e);
-    setTasks(
-      tasks.filter((task, ind) => {
-        return Number(e.target.id) !== ind;
-      })
+    const handleClick = (e) => {
+      e.preventDefault();
+      setTasks((prevTasks) => [...prevTasks, inputValue]);
+      setNoteColors((prevColors) => [...prevColors, getRandomColor()]);
+      setInputValue("");
+    };
+
+    return { getRandomColor, handleClick };
+  }, [inputValue]);
+
+  const closeTask = (index) => {
+    setTasks((prevTasks) => {
+      const updatedTasks = [...prevTasks];
+      updatedTasks.splice(index, 1);
+      return updatedTasks;
+    });
+
+    setNoteColors((prevColors) => {
+      const updatedNoteColors = [...prevColors];
+      updatedNoteColors.splice(index, 1);
+      return updatedNoteColors;
+    });
+  };
+
+  const memoizedColors = useMemo(() => {
+    return tasks.map(
+      (task, index) => noteColors[index] || memoizedFunctions.getRandomColor()
     );
-  }
+  }, [tasks, noteColors, memoizedFunctions]);
 
   return (
     <>
       <div className="main">
         <div className="left">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={memoizedFunctions.handleClick}>
             <textarea
-              type="color"
               name=""
               id=""
-              cols=""
-              rows=""
-              placeholder="Enter your value"
+              cols="30"
+              rows="9"
+              placeholder="Write a text here"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             ></textarea>
-            {/* <div>
-              <input type="color" class="picker" id="bgColor" />
-              <h3>Bg Color</h3>
-            </div> */}
-            <button type="submit">Add</button>
+            <button type="submit">Add Note</button>
           </form>
         </div>
         <div className="right">
-          <h2>TEXT NOTE</h2>
-          {/* <div className="tasks">
-          {tasks.map((task, index) => (
-
-            <div className="task" key={index}>
-              <span onClick={() => closeTask(index)}>&times;</span>
-              {task}
-            </div>
-          ))}
-        </div> */}
           <div className="tasks">
-            {tasks.map((task, index) => {
-              const randomColor = colors[Math.floor(Math.random() * 3)];
-              return (
-                <div
-                  className="task"
-                  key={index}
-                  style={{
-                    background: randomColor.background,
-                    color: randomColor.color,
-                  }}
-                >
-                  <span onClick={closeTask} id={index}>
-                    &times;
-                  </span>
-                  {task}
-                </div>
-              );
-            })}
+            {tasks.map((task, index) => (
+              <div
+                className="task"
+                key={index}
+                style={{
+                  background: memoizedColors[index].background,
+                  color: memoizedColors[index].color,
+                }}
+              >
+                <span onClick={() => closeTask(index)}>&times;</span>
+                {task}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -83,6 +83,4 @@ function AddNote() {
   );
 }
 
-export default AddNote;
-
-// //......................
+export default TextNote;
